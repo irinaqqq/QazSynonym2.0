@@ -1,0 +1,299 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Word Synonyms Translator</title>
+	<style>
+        body {
+            background-image: url("{% static 'images/1.png' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			{% comment %} margin-top: 50px; {% endcomment %}
+		}
+
+		.box {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 20px;
+			margin-top: 0px;
+			padding: 20px;
+			background-image: url("{% static 'images/2.png' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+			border-radius: 30px;
+			border-color: #4D7DB5;
+			box-shadow: 0px 0px 5px #ccc;
+			width: 88%;
+			max-width: 900px;
+			min-height: 440px;
+		}
+
+		h1 {
+			margin-bottom: 20px;
+            color:black
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+		}
+
+		.form-input {
+			width: 100%;
+			padding: 10px;
+			margin: 20px;
+			border-radius: 5px;
+			border: none;
+			font-size: 16px;
+		}
+
+		button {
+			padding: 10px;
+			background-color: #4D7DB5;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+			margin-right: 15px;
+		}
+
+		table {
+			border-collapse: collapse;
+			margin-top: 20px;
+			width: 100%;
+		}
+
+		th, td {
+			border: 1px solid black;
+			padding: 8px;
+			text-align: left;
+		}
+
+		th {
+			background-color: #4D7DB5;
+			color: white;
+		}
+        #loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: visible;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+          }
+        
+          /* Transparent Overlay */
+          #loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            z-index: 998;
+            background-color: rgba(0, 0, 0, 0.7);
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+          }
+        
+          /* Spinner */
+          #loading:after {
+            content: '';
+            display: block;
+            position: absolute;
+            z-index: 999;
+            border-style: solid;
+            border-color: #4D7DB5;
+            border-top-color: #fff;
+            height: 1em;
+            width: 1em;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            border-radius: 50%;
+            animation: spin 1s ease infinite;
+            border-width: 10px
+          }
+          @keyframes spin {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+		  .kaznu-text {
+			font-family: Bebas Neue;
+			font-size: 22px;
+			color: #000000bf;
+			padding-right: 20px;
+			padding-left: 20px;
+		}
+		.author-text {
+			font-size: 22px;
+			font-family: Bebas Neue;
+			color: #000000bf;
+			text-transform: uppercase;
+			padding-right: 20px;
+			padding-left: 20px;
+		}
+		.container-bottom {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-left: 80px;
+			margin-top: 20px;
+		}
+		@font-face {
+			font-family: 'Bebas Neue';
+			src: url('static/fonts/BebasNeue-Regular.ttf') format('truetype');
+		  }
+
+		  .company {
+			font-size: 99px;
+			font-family: Bebas Neue;
+			color: #4D7DB5;
+			margin-right: 20px;
+			margin-left: 290px;
+		}
+		.project{
+			font-family: Bebas Neue;
+		}
+		.container-top {
+			display: flex;
+			align-items: center; /* centers the content vertically */
+			justify-content: center; /* centers the content horizontally */
+			flex-wrap: wrap; /* allows content to wrap to next line */
+		  }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="container-top">
+			<span class="company">MEDLINE</span>
+			<div class="project">
+			  <div>Creating a system for automatic</div>
+			  <div>synonym extraction from medical texts</div>
+			</div>
+		  </div>
+		  
+		<div class="box">
+			<form method="post">
+			  {% csrf_token %}
+			  <label for="translate-input" style = "font-family: Bebas Neue;">Enter your text</label>
+			  <div class="input-container">
+				<input id="translate-input" class="form-input" type="text" name="translate" value="{{ text }}" required>
+
+				<button type="submit" class="search-button">&#128269;</button>
+			  </div>
+			</form>
+			{% comment %} <table>
+			  <tr>
+				<th>Сөз</th>
+				<th>Синонимдер</th>
+			  </tr>
+			  {% for key, value in words.items %}
+			  <tr>
+				<td>{{ key }}</td>
+				<td>{{ value|join:", " }}</td>
+			  </tr>
+			  {% endfor %}
+			</table> {% endcomment %}
+			<div class="container1">
+<textarea class="keys" rows="15" cols="55">{% for key, value in words.items %}{{ key }}
+{% endfor %}</textarea>
+<textarea class="values" rows="15" cols="55">{% for key, value in words.items %}{{ value|join:", " }}
+{% endfor %}</textarea>
+			  
+			  </div>
+			  
+			  <style>
+			  .container1 {
+				display: flex;
+				flex-direction: row;
+			  }
+			  
+			  .keys {
+				{% comment %} width: 50%; {% endcomment %}
+				margin-left: 100px;
+				border-top-left-radius: 10px;
+				border-bottom-left-radius: 10px;
+			  }
+			  
+			  .values {
+				{% comment %} width: 50%; {% endcomment %}
+				{% comment %} padding-right: 10px; {% endcomment %}
+				margin-right: 100px;
+				border-top-right-radius: 10px;
+				border-bottom-right-radius: 10px;
+			  }
+			  </style>
+			  
+				
+				
+
+		  </div>
+		  
+		  <style>
+			.input-container {
+			  display: flex;
+			  justify-content: space-between;
+			  align-items: center;
+			  width: 100%;
+			}
+			.form-input {
+			  width: 100%;
+			}
+		  </style>
+		  
+		
+		{% comment %} {% if words %}
+		<div class="box">
+			<table>
+				<tr>
+					<th>Сөз</th>
+					<th>Синонимдер</th>
+				</tr>
+				{% for key, value in words.items %}
+				<tr>
+					<td>{{ key }}</td>
+					<td>{{ value|join:", " }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% endif %} {% endcomment %}
+	</div>
+    <div id="loading" style="display:none">
+      </div>
+      <script>
+        const form = document.querySelector("form");
+      
+        form.addEventListener("submit", () => {
+          const loading = document.querySelector("#loading");
+          loading.style.display = "block";
+        });
+      </script>
+	  <div class="container-bottom">
+	  <span class="kaznu-text">KAZNU 2023</span>
+	  <img src="{% static 'images/3.png' %}" alt="Image Description" width="50" height="50" style="margin-right: 10px;">
+	  <img src="{% static 'images/4.png' %}" alt="Image Description" width="50" height="50">
+
+	  <span class="author-text">by Aisazhanov & Abenbaev</span>
+	  </div>
+</body>
+</html>
